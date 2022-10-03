@@ -22,7 +22,7 @@ def find_lowest_price_for_device(device):
     pass
 
 
-def find_window_for_power_duration(prices, duration):
+def find_start_time_for_power_duration(prices, duration):
     window = ceil(duration * 2)
     # Double the data to get the 30-minutes resolution
     half_hour_prices = []
