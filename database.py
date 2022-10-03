@@ -111,9 +111,9 @@ def get_device(name):
 def get_all_devices():
     with SqLiteDb(SQLITE_DB_NAME) as db:
         query = db.execute(f"SELECT * FROM {SQLITE_DEVICES_TABLE_NAME};")
-        if query:
+        results = query.fetchall()
+        if results:
             colunms = db.get_colunms()
-            results = query.fetchall()
             return (dict(zip(colunms, res)) for res in results)
         logger.warning(f'No devices found')
         return None
