@@ -39,3 +39,108 @@ def find_start_time_for_power_duration(prices, duration):
     min_price = min(window_totals)
     min_price_index = window_totals.index(min_price)
     return half_hour_prices[min_price_index]['time']
+
+
+def find_mean_value(prices):
+    values = sorted(prices, key=lambda x: x['value'])
+    vals = [v['value'] for v in values]
+    print(vals)
+    diffs = [round((n-v) / n, 2) for v, n in zip(vals[:-1], vals[1:])]
+    print(diffs)
+    return values[len(values) // 2]
+
+
+def find_average_value(prices):
+    total = sum(v['value'] for v in prices)
+    return total // len(prices)
+
+
+def find_flat_periods(prices, variation=0.1):
+    pass
+
+
+def get_low_prices(prices):
+    all_slices = []
+    average = find_average_value(prices)
+    slice_started = False
+    for price in prices:
+        if price['value'] < average:
+            if not slice_started:
+                slice = [price['value']]
+                slice_started = True
+            else:
+                slice.append(price['value'])
+        else:
+            if slice_started:
+                slice_started = False
+                all_slices.append(slice)
+    if slice_started:
+        all_slices.append(slice)
+    return all_slices
+
+
+if __name__ == '__main__':
+    print('now')
+    prices = nordpool_prices.get_future_prices()
+    prices = prices[:24]
+    vals = [p['value'] for p in prices]
+    print(vals)
+    print(get_low_prices(prices))
+    print([round((n-v) / n, 2) for v, n in zip(vals[:-1], vals[1:])])
+    print(find_mean_value(prices))
+    print(find_average_value(prices))
+
+
+    print('day_before=1')
+    prices = nordpool_prices.get_past_prices(days_before=1)
+    vals = [p['value'] for p in prices]
+    print(vals)
+    print(get_low_prices(prices))
+    print([round((n-v) / n, 2) for v, n in zip(vals[:-1], vals[1:])])
+    print(find_mean_value(prices))
+    print(find_average_value(prices))
+
+    print('day_before=2')
+    prices = nordpool_prices.get_past_prices(days_before=2)
+    vals = [p['value'] for p in prices]
+    print(vals)
+    print(get_low_prices(prices))
+    print([round((n-v) / n, 2) for v, n in zip(vals[:-1], vals[1:])])
+    print(find_mean_value(prices))
+    print(find_average_value(prices))
+
+    print('day_before=3')
+    prices = nordpool_prices.get_past_prices(days_before=3)
+    vals = [p['value'] for p in prices]
+    print(vals)
+    print(get_low_prices(prices))
+    print([round((n-v) / n, 2) for v, n in zip(vals[:-1], vals[1:])])
+    print(find_mean_value(prices))
+    print(find_average_value(prices))
+
+    print('day_before=4')
+    prices = nordpool_prices.get_past_prices(days_before=4)
+    vals = [p['value'] for p in prices]
+    print(vals)
+    print(get_low_prices(prices))
+    print([round((n-v) / n, 2) for v, n in zip(vals[:-1], vals[1:])])
+    print(find_mean_value(prices))
+    print(find_average_value(prices))
+
+    print('day_before=5')
+    prices = nordpool_prices.get_past_prices(days_before=5)
+    vals = [p['value'] for p in prices]
+    print(vals)
+    print(get_low_prices(prices))
+    print([round((n-v) / n, 2) for v, n in zip(vals[:-1], vals[1:])])
+    print(find_mean_value(prices))
+    print(find_average_value(prices))
+
+    print('day_before=6')
+    prices = nordpool_prices.get_past_prices(days_before=6)
+    vals = [p['value'] for p in prices]
+    print(vals)
+    print(get_low_prices(prices))
+    print([round((n-v) / n, 2) for v, n in zip(vals[:-1], vals[1:])])
+    print(find_mean_value(prices))
+    print(find_average_value(prices))

@@ -15,9 +15,25 @@ FI_REGULAR_VAT = 1.24
 FI_LOW_VAT = 1.10
 
 
+def get_past_prices(days_before=0):
+    prices_spot = elspot.Prices()
+    now = datetime.datetime.now(tz=FI_TIMEZONE)
+    tax_rate = FI_REGULAR_VAT if now < FI_LOW_TAX_RATE_START or now > FI_LOW_TAX_RATE_END else FI_LOW_VAT
+    try:
+        prices_spot_finland = prices_spot.hourly(end_date=datetime.date.today() - datetime.timedelta(days=days_before), areas=['FI'])
+    except ConnectionError:
+        logger.warning('Could not fetch nordpool today\'s prices!')
+        return []
+    prices = [{
+            'time': data['start'].astimezone(FI_TIMEZONE),
+            'value': round(data['value'] / 10.0 * tax_rate, 2),
+        } for data in prices_spot_finland['areas']['FI']['values'] if data['value'] != float('inf')]
+    return prices
+
+
 def get_prices():
     prices_spot = elspot.Prices()
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(tz=FI_TIMEZONE)
     tax_rate = FI_REGULAR_VAT if now < FI_LOW_TAX_RATE_START or now > FI_LOW_TAX_RATE_END else FI_LOW_VAT
     try:
         prices_spot_finland_today = prices_spot.hourly(end_date=datetime.date.today(), areas=['FI'])
