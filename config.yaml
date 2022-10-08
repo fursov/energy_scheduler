@@ -1,0 +1,22 @@
+devices:
+  - name: Water heater
+    consumptions:
+      - phase 1: 1000
+      - phase 2: 1000
+      - phase 3: 1000
+    period: 24h
+    duration: 3h
+  - name: Skoda D
+    consumptions:
+      - phase 1: 3600
+    period: 24h
+    duration: 3h
+
+max_load:
+  - phase 1: 6000
+  - phase 2: 6000
+  - phase 3: 6000
+
+prices_provider:
+  poll period: 30m
+  low price offset: 0%
